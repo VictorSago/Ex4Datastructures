@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SkalProj_Datastrukturer_Minne
+namespace VicsDatastructuresEx4
 {
     class Program
     {
