@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace VicsDatastructuresEx4
 {
@@ -13,18 +14,19 @@ namespace VicsDatastructuresEx4
 
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("Please navigate through the menu by inputting the number \n(1, 2, 3 ,4, 0) of your choice"
                     + "\n1. Examine a List"
                     + "\n2. Examine a Queue"
                     + "\n3. Examine a Stack"
                     + "\n4. CheckParanthesis"
                     + "\n0. Exit the application");
-                char input = ' '; //Creates the character input to be used with the switch-case below.
+                char input = ' '; // Creates the character input to be used with the switch-case below.
                 try
                 {
-                    input = Console.ReadLine()[0]; //Tries to set input to the first char in an input line
+                    input = Console.ReadLine()[0]; // Tries to set input to the first char in an input line
                 }
-                catch (IndexOutOfRangeException) //If the input line is empty, we ask the users for some input.
+                catch (IndexOutOfRangeException) // If the input line is empty, we ask the users for some input.
                 {
                     Console.Clear();
                     Console.WriteLine("Please enter some input!");
@@ -78,6 +80,53 @@ namespace VicsDatastructuresEx4
             //string value = input.substring(1);
 
             //switch(nav){...}
+
+            Console.Clear();
+
+            bool run = true;
+            var theList = new List<string>();
+
+            Console.WriteLine("Enter '+word' or '-word' to add or remove a word ");
+            Console.WriteLine("Enter 's' to show the list or 'q' to quit and return to the main menu.");
+            
+            // TODO: Guards against wrong input?
+
+            while (run)
+            {
+                string input = Console.ReadLine();
+
+                if (String.IsNullOrEmpty(input.Trim()))
+                {
+                    Console.WriteLine("Please enter a '+string', '-string', 's' or 'q':");
+                    continue;
+                }
+                var word = input.Substring(1).Trim();
+                switch (input[0])
+                {
+                    case '+' when (input.Length >= 2):
+                        theList.Add(word);
+                        Console.WriteLine($"Capacity: {theList.Capacity}");
+                        break;
+                    case '-' when (input.Length >= 2):
+                        theList.Remove(word);
+                        Console.WriteLine($"Capacity: {theList.Capacity}");
+                        break;
+                    case 's':
+                        Console.Write($"Capacity = {theList.Capacity}: ");
+                        foreach (var l in theList)
+                        {
+                            Console.Write($"{l}, ");
+                        }
+                        Console.WriteLine();
+                        break;
+                    case 'q':
+                        run = false;
+                        break;
+                    default:
+                        Console.WriteLine("Please enter a '+string', '-string', 's' or 'q':");
+                        break;
+                }
+            }
         }
 
         /// <summary>
@@ -116,4 +165,3 @@ namespace VicsDatastructuresEx4
 
     }
 }
-
