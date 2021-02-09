@@ -31,3 +31,7 @@ S: Nej.
 ## F1.6 När​ ​är​ ​det​ ​då​ ​fördelaktigt​ ​att​ ​använda​ ​en​ ​egendefinierad​ ​array​ ​istället​ ​för​ ​en​ ​lista?
 
 S: När man vet i förväg hur många element arrayen ska innehålla.
+
+## F2.1 Simulera​ ​ännu​ ​en​ ​gång​ ​ICA-kön​ ​på​ ​papper.​ ​Denna​ ​gång​ ​med​ ​en​ stack​.​ ​Varför​ ​är​ ​det inte​ ​så​ ​smart​ ​att​ ​använda​ ​en​ ​stack​ ​i​ ​det​ ​här​ ​fallet?
+
+S: För att en stack följe Först-in-först-ut principen, så med en stack kommer den person som ställde sig sist i kön att expedieras först, medan vi vill i det här fallet att den som stått i kön längst expedieras snarast.

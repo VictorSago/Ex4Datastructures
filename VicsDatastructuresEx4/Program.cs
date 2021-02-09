@@ -87,7 +87,7 @@ namespace VicsDatastructuresEx4
 
             var theList = new List<string>();
 
-            Console.WriteLine("Enter '+word' or '-word' to add or remove a word;");
+            Console.WriteLine("Enter '+word' or '-word' to add or remove a word respectively;");
             Console.WriteLine("Enter 's' to show the list or 'q' to quit and return to the main menu.");
 
             // TODO: Guards against wrong input?
@@ -154,7 +154,7 @@ namespace VicsDatastructuresEx4
 
             var theQueue = new Queue<string>();
 
-            Console.WriteLine("Enter '+word' to add 'word' to the queue or '-' to remove an element;");
+            Console.WriteLine("Enter '+word' to add 'word' to the queue or '-' to remove an element from it;");
             Console.WriteLine("Enter 's' to show the queue or 'q' to quit and return to the main menu.");
 
             while (true)
@@ -197,9 +197,16 @@ namespace VicsDatastructuresEx4
         public static string QueueToString<T>(Queue<T> queue)
         {
             var sb = new StringBuilder();
-            foreach (var e in queue)
+            if (queue.Count == 0)
             {
-                sb.Append(e).Append(" < ");
+                sb.Append("<Empty>");
+            }
+            else
+            {
+                foreach (var e in queue)
+                {
+                    sb.Append(e).Append(" < ");
+                }
             }
             return sb.ToString();
         }
@@ -214,6 +221,93 @@ namespace VicsDatastructuresEx4
              * Create a switch with cases to push or pop items
              * Make sure to look at the stack after pushing and and poping to see how it behaves
             */
+            // There is a conflict with the exercise text text which instructs us to 
+            // "reverse a string using a stack", while the instructions here appear to
+            // follow the same pattern as with the queue and the list.
+            // So I will be improvising a bit.
+
+            Console.Clear();
+
+            var theStack = new Stack<char>();
+
+            Console.WriteLine($"Text");
+            
+
+            Console.WriteLine("Enter '+string' to add 'string' to the stack or '-' to remove a string from it;");
+            Console.WriteLine("Enter '?' to show the stack or '!' to quit and return to the main menu.");
+
+            while (true)
+            {
+                string input = Console.ReadLine();
+
+                if (String.IsNullOrEmpty(input.Trim()))
+                {
+                    Console.WriteLine("Please enter a '+string', '-', 's' or 'q':");
+                    continue;
+                }
+                var word = input.Substring(1).Trim();
+                switch (input[0])
+                {
+                    case '+' when (word.Length >= 1):
+                        if (theStack.Count > 0)
+                        {
+                            theStack.Push(';');                 // Using ';' to separate words from one another
+                        }
+                        foreach (var c in word)
+                        {
+                            theStack.Push(c);
+                        }
+                        break;
+                    case '-':
+                        if (theStack.Count > 0)
+                        {
+                            Console.WriteLine($"Removing sequence: {ReverseText(theStack)}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"The Stack is empty.");
+                        }
+                        break;
+                    case '?':
+                        Console.WriteLine($"The Stack: {StackToString(theStack)}");
+                        break;
+                    case '!':
+                        return;
+                    default:
+                        Console.WriteLine("Please enter a '+string', '-', 's' or 'q':");
+                        break;
+                }
+            }
+        }
+
+        static string ReverseText(Stack<char> stack)
+        {
+            var sb = new StringBuilder();
+
+            // Characters are removed from the stack one-by-one in reverse order
+            // and appended to the string, until the word separator is encountered
+            // or the stack runs out of characters
+            while (stack.Count > 0)
+            {
+                char c = stack.Pop();
+                if (c == ';')
+                {
+                    break;
+                }
+                sb.Append(c);
+            }
+            return sb.ToString();
+        }
+
+        static string StackToString(Stack<char> stack)
+        {
+            var sb = new StringBuilder();
+            var sarray = stack.ToArray();
+            foreach (var c in sarray)
+            {
+                sb.Append(c);
+            }
+            return sb.ToString();
         }
 
         static void CheckParanthesis()
