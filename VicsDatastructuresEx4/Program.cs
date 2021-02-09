@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Text;
+using System.Collections;
+using System;
 using System.Collections.Generic;
 
 namespace VicsDatastructuresEx4
@@ -83,15 +85,14 @@ namespace VicsDatastructuresEx4
 
             Console.Clear();
 
-            bool run = true;
             var theList = new List<string>();
 
-            Console.WriteLine("Enter '+word' or '-word' to add or remove a word ");
+            Console.WriteLine("Enter '+word' or '-word' to add or remove a word;");
             Console.WriteLine("Enter 's' to show the list or 'q' to quit and return to the main menu.");
-            
+
             // TODO: Guards against wrong input?
 
-            while (run)
+            while (true)
             {
                 string input = Console.ReadLine();
 
@@ -103,30 +104,39 @@ namespace VicsDatastructuresEx4
                 var word = input.Substring(1).Trim();
                 switch (input[0])
                 {
-                    case '+' when (input.Length >= 2):
+                    case '+' when (word.Length >= 1):
                         theList.Add(word);
                         Console.WriteLine($"Capacity: {theList.Capacity}");
                         break;
-                    case '-' when (input.Length >= 2):
+                    case '-' when (word.Length >= 1):
                         theList.Remove(word);
                         Console.WriteLine($"Capacity: {theList.Capacity}");
                         break;
                     case 's':
-                        Console.Write($"Capacity = {theList.Capacity}: ");
-                        foreach (var l in theList)
-                        {
-                            Console.Write($"{l}, ");
-                        }
-                        Console.WriteLine();
+                        Console.WriteLine($"List Capacity = {theList.Capacity}: {ListTotString(theList)}");
+                        // foreach (var l in theList)
+                        // {
+                        //     Console.Write($"{l}, ");
+                        // }
+                        // Console.WriteLine();
                         break;
                     case 'q':
-                        run = false;
-                        break;
+                        return;
                     default:
                         Console.WriteLine("Please enter a '+string', '-string', 's' or 'q':");
                         break;
                 }
             }
+        }
+
+        public static string ListTotString<T>(List<T> list)
+        {
+            var sb = new StringBuilder();
+            for (var i = 0; i < list.Count; i++)
+            {
+                sb.Append(list[i]).Append(i == list.Count - 1 ? "." : ", ");
+            }
+            return sb.ToString();
         }
 
         /// <summary>
@@ -139,6 +149,59 @@ namespace VicsDatastructuresEx4
              * Create a switch with cases to enqueue items or dequeue items
              * Make sure to look at the queue after Enqueueing and Dequeueing to see how it behaves
             */
+
+            Console.Clear();
+
+            var theQueue = new Queue<string>();
+
+            Console.WriteLine("Enter '+word' to add 'word' to the queue or '-' to remove an element;");
+            Console.WriteLine("Enter 's' to show the queue or 'q' to quit and return to the main menu.");
+
+            while (true)
+            {
+                string input = Console.ReadLine();
+
+                if (String.IsNullOrEmpty(input.Trim()))
+                {
+                    Console.WriteLine("Please enter a '+string', '-', 's' or 'q':");
+                    continue;
+                }
+                var word = input.Substring(1).Trim();
+                switch (input[0])
+                {
+                    case '+' when (word.Length >= 1):
+                        theQueue.Enqueue(word);
+                        break;
+                    case '-':
+                        if (theQueue.Count > 0)
+                        {
+                            Console.WriteLine($"Removing element: {theQueue.Dequeue()}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"The Queue is empty.");
+                        }
+                        break;
+                    case 's':
+                        Console.WriteLine($"The Queue: {QueueToString(theQueue)}");
+                        break;
+                    case 'q':
+                        return;
+                    default:
+                        Console.WriteLine("Please enter a '+string', '-', 's' or 'q':");
+                        break;
+                }
+            }
+        }
+
+        public static string QueueToString<T>(Queue<T> queue)
+        {
+            var sb = new StringBuilder();
+            foreach (var e in queue)
+            {
+                sb.Append(e).Append(" < ");
+            }
+            return sb.ToString();
         }
 
         /// <summary>
