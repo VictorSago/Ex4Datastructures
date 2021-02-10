@@ -90,8 +90,6 @@ namespace VicsDatastructuresEx4
             Console.WriteLine("Enter '+word' or '-word' to add or remove a word respectively;");
             Console.WriteLine("Enter 's' to show the list or 'q' to quit and return to the main menu.");
 
-            // TODO: Guards against wrong input?
-
             while (true)
             {
                 string input = Console.ReadLine();
@@ -101,7 +99,7 @@ namespace VicsDatastructuresEx4
                     Console.WriteLine("Please enter a '+string', '-string', 's' or 'q':");
                     continue;
                 }
-                var word = input.Substring(1).Trim();
+                var word = input.Substring(1).Trim();       // The input string minus the first character and surrounding spaces
                 switch (input[0])
                 {
                     case '+' when (word.Length >= 1):
@@ -113,12 +111,7 @@ namespace VicsDatastructuresEx4
                         Console.WriteLine($"Capacity: {theList.Capacity}");
                         break;
                     case 's':
-                        Console.WriteLine($"List Capacity = {theList.Capacity}: {ListTotString(theList)}");
-                        // foreach (var l in theList)
-                        // {
-                        //     Console.Write($"{l}, ");
-                        // }
-                        // Console.WriteLine();
+                        Console.WriteLine($"List Capacity = {theList.Capacity}: {ListToString(theList)}");
                         break;
                     case 'q':
                         return;
@@ -129,7 +122,13 @@ namespace VicsDatastructuresEx4
             }
         }
 
-        public static string ListTotString<T>(List<T> list)
+        /// <summary>
+        /// Returns all elements of the list as a simple, one-line string
+        /// </summary>
+        /// <param name="list"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static string ListToString<T>(List<T> list)
         {
             var sb = new StringBuilder();
             for (var i = 0; i < list.Count; i++)
@@ -194,6 +193,12 @@ namespace VicsDatastructuresEx4
             }
         }
 
+        /// <summary>
+        /// Returns all elements of the queue as a simple, one-line string
+        /// </summary>
+        /// <param name="queue"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static string QueueToString<T>(Queue<T> queue)
         {
             var sb = new StringBuilder();
@@ -205,7 +210,7 @@ namespace VicsDatastructuresEx4
             {
                 foreach (var e in queue)
                 {
-                    sb.Append(e).Append(" < ");
+                    sb.Append(e).Append(" < ");     // Add '<' after each element to show the direction of the queue
                 }
             }
             return sb.ToString();
@@ -220,7 +225,7 @@ namespace VicsDatastructuresEx4
              * Loop this method until the user inputs something to exit to main menue.
              * Create a switch with cases to push or pop items
              * Make sure to look at the stack after pushing and and poping to see how it behaves
-            */
+             */
             // There is a conflict with the exercise text text which instructs us to 
             // "reverse a string using a stack", while the instructions here appear to
             // follow the same pattern as with the queue and the list.
@@ -229,9 +234,6 @@ namespace VicsDatastructuresEx4
             Console.Clear();
 
             var theStack = new Stack<char>();
-
-            Console.WriteLine($"Text");
-            
 
             Console.WriteLine("Enter '+string' to add 'string' to the stack or '-' to remove a string from it;");
             Console.WriteLine("Enter '?' to show the stack or '!' to quit and return to the main menu.");
@@ -242,13 +244,15 @@ namespace VicsDatastructuresEx4
 
                 if (String.IsNullOrEmpty(input.Trim()))
                 {
-                    Console.WriteLine("Please enter a '+string', '-', 's' or 'q':");
+                    Console.WriteLine("Please enter a '+string', '-', '?' or '!':");
                     continue;
                 }
                 var word = input.Substring(1).Trim();
                 switch (input[0])
                 {
                     case '+' when (word.Length >= 1):
+                    // Add each character in the word to the stack,
+                    // separating each new word with ';' from the previous
                         if (theStack.Count > 0)
                         {
                             theStack.Push(';');                 // Using ';' to separate words from one another
@@ -260,6 +264,7 @@ namespace VicsDatastructuresEx4
                         break;
                     case '-':
                         if (theStack.Count > 0)
+                        // If there are words in the stack remove the uppermost in reverse character order
                         {
                             Console.WriteLine($"Removing sequence: {ReverseText(theStack)}");
                         }
@@ -269,9 +274,11 @@ namespace VicsDatastructuresEx4
                         }
                         break;
                     case '?':
+                        // Show the stack
                         Console.WriteLine($"The Stack: {StackToString(theStack)}");
                         break;
                     case '!':
+                        // Quit
                         return;
                     default:
                         Console.WriteLine("Please enter a '+string', '-', 's' or 'q':");
@@ -280,12 +287,17 @@ namespace VicsDatastructuresEx4
             }
         }
 
+        /// <summary>
+        /// Returns the next'word' from the stack as a one line string
+        /// </summary>
+        /// <param name="stack"></param>
+        /// <returns></returns>
         static string ReverseText(Stack<char> stack)
         {
             var sb = new StringBuilder();
 
             // Characters are removed from the stack one-by-one in reverse order
-            // and appended to the string, until the word separator is encountered
+            // and appended to the string, until the separator ';' is encountered
             // or the stack runs out of characters
             while (stack.Count > 0)
             {
@@ -299,6 +311,11 @@ namespace VicsDatastructuresEx4
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Returns all elements in the stack as a simple, one-line string
+        /// </summary>
+        /// <param name="stack"></param>
+        /// <returns></returns>
         static string StackToString(Stack<char> stack)
         {
             var sb = new StringBuilder();
@@ -318,7 +335,73 @@ namespace VicsDatastructuresEx4
              * Example of incorrect: (()]), [), {[()}],  List<int> list = new List<int>() { 1, 2, 3, 4 );
              */
 
-        }
+            Console.Clear();
 
+            // Get string from user input
+            // If the string is 'quit' -- return, else analyze the string
+            // Repeat
+            while (true)
+            {
+                Console.WriteLine("Please enter an expression to analyze or 'quit' to return to the main menu:");
+                var expression = Console.ReadLine();
+                if (String.IsNullOrEmpty(expression.Trim()))
+                {
+                    continue;
+                }
+                if (expression.Equals("q") || expression.ToLower().Equals("quit"))
+                {
+                    break;
+                }
+                var success = AnalyzeExpression(expression);
+                if (success)
+                {
+                    Console.WriteLine("The expression is well formed!");
+                }
+                else
+                {
+                    Console.WriteLine("The expression is NOT well formed!");
+                }
+            }
+
+        }
+        private static bool AnalyzeExpression(string expression)
+        {
+            // For matching an opening pranthesis to a corresponding closing character
+            var parmatch = new Dictionary<char, char>()
+            {
+                {'(', ')'},
+                {'[', ']'},
+                {'{', '}'}
+            };
+            // The stack to hold every opening paranthesis
+            var parans = new Stack<char>();
+            // Iterate through the string
+            foreach (var c in expression)
+            {
+                // Upon encountering an opening paranthesis put it into a stack
+                if (parmatch.ContainsKey(c))
+                {
+                    parans.Push(c);
+                }
+                // Upon encountering closing paranthesis check if the top paranthesis in the stack is a match
+                // If a match -- discard both and continue
+                // If not a match -- fail
+                else if (parmatch.ContainsValue(c))
+                {
+                    // Short-circuiting evaluation: the second condition in the if statement will be evaluated 
+                    // only if the first condition is true
+                    if (parans.Count > 0 && c == parmatch[parans.Peek()])
+                    {
+                        parans.Pop();
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            // At the end if the stack is empty -- succeed, otherwise -- fail
+            return parans.Count == 0;
+        }
     }
 }
